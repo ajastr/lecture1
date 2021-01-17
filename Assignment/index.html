@@ -1,0 +1,194 @@
+<!-- see also https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/Getting_started -->
+
+<!DOCTYPE html> 
+<html>
+
+    <!-- everything that isn't content -->
+    <head>
+        <meta charset="utf-8">
+        <title>Example 1</title>
+
+        <!-- css -->
+        <style>
+            
+             html {
+                font-family: "Garamond", Serif;
+                color:#3a3838e7;
+                text-align: center;
+            } 
+
+            #title {
+            
+                /*color:#0e6863e7;*/
+                text-transform: capitalize;
+                color:#0e6863e7;
+                font-size: 40px;
+                /*#text-shadow: 2px 2px 5px #0e6863e7;*/
+            }
+     
+            img {
+                width: 512px; /* set image width */
+            }
+
+            #caption {
+                display: none; /* start with caption hidden */
+                font-style: italic;
+
+            /*background-color: rgba(255, 255, 128, .5);*/
+            
+            }
+        </style>
+          <script src="script.js"></script>
+
+    </head>
+
+    <!-- content -->
+    <body style="background-color:#fcfcfce7">
+        <!-- some text and links -->
+      
+        <p id="title">
+        Why Do Convolutional Neural Networks Design Better Buildings?
+        </p>
+
+        <p>
+        <a href ="https://github.com/ajastr/Neural-Structural-Optimization-Study"> Neural Structural Optimization Study</a> is a project submitted for Easter European Machine Learning School 2020. 
+        It is based on the paper <a href="https://github.com/google-research/neural-structural-optimization">Neural reparameterization improves structural optimization</a></i> by Stephan Hoyer, Jascha Sohl-Dickstein and Sam Greydanus from Google Reaserch.
+        </p>
+
+        <p id='caption_p'>Compare the early steps of training </p>
+        
+        <div id="images">
+
+    
+        <img id="Pixel"
+        alt="Pixel Model"
+        src="https://github.com/ajastr/Neural-Structural-Optimization-Study/blob/master/Images/Pixel_Model/anchored_suspended_bridge_128x128_0.1_pixel_199.jpg?raw=true">
+
+        <img id="CNN"
+        alt="Pixel Model"
+        src="https://github.com/ajastr/Neural-Structural-Optimization-Study/blob/master/Images/CNN_Model/anchored_suspended_bridge_128x128_0.1_cnn_199.jpg?raw=true">
+        </div>
+
+      
+        <div id="ui">
+            <input id="StepPixel" name="Learning Step - Pixel Model" type="range" min="1" max="200" step="1" value="200" oninput="changeStep()">
+            <label id="x_label" for="StepPixel">Learning Step - Pixel Model 200</label>
+            <input id="StepCNN" name="Learning Step - CNN Model" type="range" min="1" max="200" step="1" value="200" oninput="changeStep()">
+            <label id="y_label" for="StepCNN">Learning Step - CNN Model 200</label>
+        </div>
+
+
+        <p id="abstract">
+        <h2>Extended Abstract </h2>
+        Deep neural networks (DNNs) have recently shown promise for applications such as weather forecasting
+        Agrawal et al. [2019] or discovery of new materials. DNNs can find better solutions in shorter times,
+        compared to previous approaches. For example, Agrawal et al. [2019] demonstrate that a DNN can predict
+        precipitation two orders of magnitude faster than a state-of-the-art physics-based approach.</br>
+        This trend is present in structural optimization as well. Structural optimization is a technique to find a best performing
+        geometry for designing objects such as bridges or skyscrapers. A common approach is to represent a given geometry
+        as a density on a grid. Next, an off-the-shelf optimizer can be used to find optimal (according to
+        a user-specified objective) design. The above procedure relies on how the optimization problem is parametrized. The simplest approach is
+        to represent each point (pixel) on the grid as a separate variable. Instead, Hoyer et al. [2019] have proposed
+        to represent the density using a convolutional neural network (CNN). The CNN output is treated as the
+        design. Counter-intuitively, Hoyer et al. [2019] have shown that using CNN as a reparametrization enables
+        finding better solutions compared to optimizing directly in the pixel space.</br>
+        The authors proposed that the reason for this is that CNNs bias the solution towards simpler design that
+        exploits larger scale structures. In this work, we delve deeper into this direction. Our contributions are as
+        follows:</br>
+         We show that using the CNN reparametrization for the initial part of training (first 8 steps out of 200),
+        and then switching to pixel-based optimization, maintains most of the benefit of CNN reparametrization.</br>
+         Furthermore, we show that switching to pixel-based optimization towards the end of training enables
+        finding an even better solution (40% relative error reduction).
+        </p>
+        
+        <p id="experiments">
+
+        <h2>Experiments</h2>
+        Our experimental setup largely follows Hoyer et al. [2019]. We focus on two models from Hoyer et al. [2019]:
+        CNN-LBFGS, and Pixel-LBFGS. Both models are optimized using the L-BFGS optimizer. We select 52
+        random tasks from Hoyer et al. [2019]. For computational reasons, we removed tasks that have more than
+        200 pixels. All models are optimized for 200 steps. We will refer to the two models as CNN and Pixel,
+        respectively.</br>
+        We examine the effect of switching from CNN to Pixel. We take L (L 2 f1; 2; 4; 8; 32; 64g steps using
+        CNN, and then take the remaining 200 􀀀 L steps using Pixel. We will refer to these models as Switch-L.
+        For each model, we report the mean normalized performance across tasks. Following Hoyer et al. [2019], we
+        normalize the performance on each task to [0; 1] range.</br>
+        Table 1 reports the results. We make two observations. First, for L = 8 we already close 80% of the gap
+        between CNN, and Pixel. This is remarkable, given that 8 steps consititute only 6% of the overall number
+        of steps (200). Second, using L = 64 further improves upon CNN. This taken together suggest that the
+        main role of CNN reparametrization is to bias the optimization in the early phase of training. In the late of
+        training, it even seems to hurt the quality of the solution.
+        </br>
+
+        <img src= "https://github.com/ajastr/Neural-Structural-Optimization-Study/blob/master/figure%202.jpg?raw=true">
+        </br>
+     
+        Figure 1: Results on a selected task (“anchored suspended bridge 128x128 0.1”). Top: loss during training.</br>
+        Bottom: designs found (from top left to bottom right) by Pixel, CNN, Switch-8 and Switch-64, respectively.
+        
+        In Figure 1, we show training curves from one of the tasks. On this task, Switch-64 achieves lower (better)
+        final score. Additionally, in agreement with Hoyer et al. [2019], the solution found by Pixel is visibly more
+        complex than CNN, in the sense that it finds more intricate geometry.
+        </p>
+
+        <p>
+        <h2>Conclusions </h2>
+        In this work, we have shown that CNN reparametrization matters more in the early phase
+        of training, then in the late phase. In particular, switching to Pixel-LBFGS after around 30% steps, enables
+        finding even better solution.<br/>
+        This opens avenue for future work for designing faster optimizers that rely on CNN-based reparametrization
+        only in the early phase of training. Alternatively, our gained understanding might help designing explicit
+        regularizers that do not rely on deep neural networks.
+        </p>
+
+        <p>
+        <h2>References</h2>
+        Shreya Agrawal, Luke Barrington, Carla Bromberg, John Burge, Cenk Gazen, and Jason Hickey. Machine
+        learning for precipitation nowcasting from radar images, 2019.
+        Stephan Hoyer, Jascha Sohl-Dickstein, and Sam Greydanus. Neural reparameterization improves structural
+        optimization, 2019.
+        </p>
+        
+          
+        <p>
+        <h2>Authors</h2>
+        Aleksandra Jastrzebska
+        <a href="https://www.linkedin.com/in/aleksandra-jastrzebska/">
+        <img scr="data:image/png;base64,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">
+        </a>
+        Stanislaw Jastrzebski
+        </p>
+        
+
+
+
+        <!-- javascript -->
+    
+        <script type="application/javascript">
+            // get reference to html elements
+            const img_p = document.getElementById('Pixel')
+            const img_c = document.getElementById('CNN')
+
+            // listen to events related to the image
+            img_p.addEventListener('mouseover', mouseOver, false)
+            img_p.addEventListener('mouseout', mouseOut, false)
+            img_c.addEventListener('mouseover', mouseOver, false)
+            img_c.addEventListener('mouseout', mouseOut, false)
+
+            // define what happens when there is a mouse over event
+            function mouseOver() {
+                document.getElementById('caption_p').style.display = 'block';
+                document.getElementById('caption_c').style.display = 'block';
+            }
+            // define what happens when there is a mouse out event
+            function mouseOut() {
+                document.getElementById('caption_p').style.display = 'none';
+                document.getElementById('caption_c').style.display = 'none';
+            }
+
+        </script>
+       
+    
+        <!-- the end -->
+    </body>
+</html>
