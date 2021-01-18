@@ -7,7 +7,7 @@ These examples introduce html and javascript concepts we'll be using in the semi
 - [Example 1](example1): Simple html and javascript example
 - [Example 2](example2): Creates an html table with javascript
 
-- [Assignment](Assignment): Deliverable for the first week of BIMCS module
+- [Assignment](Assignment): Deliverable for the first week of BIMSC module
 
    https://ajastr.github.io/macad-2S1-Lecture-1/
 
