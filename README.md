@@ -9,6 +9,8 @@ These examples introduce html and javascript concepts we'll be using in the semi
 
 - [Assignment](Assignment): Deliverable for the first week of BIMCS module
 
+   https://ajastr.github.io/macad-2S1-Lecture-1/
+
 ## References
 
 - https://developer.mozilla.org/en-US/docs/Learn
